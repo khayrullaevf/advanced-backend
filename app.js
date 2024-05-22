@@ -3,93 +3,25 @@ require('dotenv').config()
 
 const express=require('express')
 const  mongoose  = require('mongoose')
-const postModel=require('./models/post.model')
+
+const fileUpload=require('express-fileupload')
 
 
 const app=express()
 
 
+const postRoute=require('./routes/post.route')
+
+
+
 
 
 app.use(express.json())
+app.use(fileUpload())
+app.use(express.static('static'))
+app.use('/api/post',postRoute)
 
-
-
-
-app.get('/',async(req,res)=>{
-
-    try { 
-        const allPosts=await postModel.find()
-        res.status(200).json({
-           posts: allPosts
-        })
-
-    } catch (error) {
-        res.status(404).json(error)
-    }
-
-
-
-
-
- res.status(200).json({
-    message:'Hello Fazliddin'
- })
-
-})
-
-app.post('/', async(req,res)=>{
-
-    try {
-        const{title,body}=req.body
-        const newPost= await postModel.create({title,body})
-   
-   
-       res.status(201).json({
-       newPost
-       })
-        
-    } catch (error) {
-        console.log(error);
-        res.status(500).json(error)
-        
-    }
-
-   
-   })
-
-app.delete('/:id',(req,res)=>{
-    console.log(req.params);
-    res.json({
-        id:req.params.id,
-        body:req.body
-    })
-   })
-
-app.put('/:id',(req,res)=>{
-    console.log(req.params);
-    res.json({
-        id:req.params.id,
-        body:req.body
-    })
-   })
-
-
-app.get('/post',(req,res)=>{
-    res.status(200).json({
-       message:'Hello posts'
-    })
-   
-   })
-
-
-
-
-   const PORT=process.env.PORT||8080
-   
-
-
-
+const PORT=process.env.PORT||8080
 const bootstrap=async()=>{
     try {
      await mongoose.connect(process.env.DB_URL).then(()=>console.log('Connected to DB'))   
@@ -103,8 +35,3 @@ const bootstrap=async()=>{
 bootstrap()
 
 
-
-
-
-//domain-port-endpoint
-//http://localhost:8080/
