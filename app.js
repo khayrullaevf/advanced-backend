@@ -1,3 +1,6 @@
+require('dotenv').config()
+ 
+
 const express=require('express')
 const  mongoose  = require('mongoose')
 const postModel=require('./models/post.model')
@@ -12,7 +15,6 @@ app.use(express.json())
 
 
 
-const DB_URL='mongodb+srv://fazliddin:XirdNFBsS5lvMLqn@cluster0.xwsklby.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
 
 app.get('/',async(req,res)=>{
 
@@ -83,13 +85,14 @@ app.get('/post',(req,res)=>{
 
 
 
-const PORT=8080
+   const PORT=process.env.PORT||8080
+   
 
 
 
 const bootstrap=async()=>{
     try {
-     await mongoose.connect(DB_URL,).then(()=>console.log('Connected to DB'))   
+     await mongoose.connect(process.env.DB_URL).then(()=>console.log('Connected to DB'))   
      app.listen(PORT,()=>console.log(`Listening on port - http://localhost:${PORT}`))
     } catch (error) {
     console.log(error);
