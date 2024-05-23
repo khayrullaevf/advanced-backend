@@ -1,6 +1,7 @@
 const UserDto = require("../dtos/user.dto")
 const userModel = require("../models/user.model")
 const bcrypt=require('bcrypt')
+const tokenService = require("./token.service")
 
 class AuthService{
 
@@ -32,8 +33,14 @@ class AuthService{
 
 
         const userDto=new UserDto(user)
+        const tokens=tokenService.generateToken({...userDto})
 
-        return {userDto}
+        await tokenService.saveTokens(userDto.id,tokens.refreshToken)
+
+
+
+
+        return {user:userDto,...tokens}
 
 
     }
@@ -50,6 +57,7 @@ class AuthService{
         await user.save()
 
     }
+
 
 
 }

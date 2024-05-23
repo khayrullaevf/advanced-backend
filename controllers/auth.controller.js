@@ -1,8 +1,5 @@
 const authService = require('../service/auth.service')
 
-
-
-
 class AuthController{
 
 
@@ -10,6 +7,7 @@ class AuthController{
         try {
             const{email,password}=req.body
             const user=await authService.register(email,password)
+            res.cookie('refreshToken',user.refreshToken,{httpOnly:true,maxAge:30*24*60*60*1000,secure:true})
             return res.json(user)
             
         } catch (error) {
@@ -29,8 +27,6 @@ class AuthController{
             console.log(error);
             
         }
-
-     
         
     }
 
