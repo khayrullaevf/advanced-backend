@@ -1,6 +1,6 @@
 const postModel=require('./../models/post.model')
 
-const postService=require('./../server/post.service')
+const postService=require('./../service/post.service')
 
 class PostController{
 
@@ -10,6 +10,7 @@ class PostController{
                  res.status(200).json({
                    posts: allPosts
                 })
+                console.log(req.requestTime);
         
             } catch (error) {
                 res.status(404).json(error)

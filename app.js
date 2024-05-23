@@ -5,21 +5,29 @@ const express=require('express')
 const  mongoose  = require('mongoose')
 
 const fileUpload=require('express-fileupload')
+const requestTime=require('./middlewares/request-time')
 
 
 const app=express()
 
 
-const postRoute=require('./routes/post.route')
-
-
-
-
-
 app.use(express.json())
 app.use(fileUpload())
 app.use(express.static('static'))
-app.use('/api/post',postRoute)
+app.use(requestTime)
+
+
+
+
+
+
+
+app.use('/api/post',require('./routes/post.route'))
+app.use('/api/auth',require('./routes/auth.route'))
+
+
+
+
 
 const PORT=process.env.PORT||8080
 const bootstrap=async()=>{
