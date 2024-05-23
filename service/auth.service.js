@@ -45,6 +45,10 @@ class AuthService{
             throw new Error('user does not exist')
         }
 
+        user.isActivated=true
+
+        await user.save()
+
     }
 
 

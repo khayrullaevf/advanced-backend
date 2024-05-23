@@ -8,7 +8,7 @@ const router=express.Router()
 
 
 router.post('/register',authController.register)
-router.post('/activation/:id',authController.activation)
+router.get('/activation/:id',authController.activation)
 
 
 
