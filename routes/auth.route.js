@@ -9,6 +9,9 @@ const router=express.Router()
 
 router.post('/register',authController.register)
 router.get('/activation/:id',authController.activation)
+router.post('/login',authController.login)
+router.post('/logout',authController.logout)
+
 
 
 
