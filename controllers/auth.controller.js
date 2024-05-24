@@ -21,15 +21,13 @@ class AuthController{
         try {
             const userId=req.params.id
             await authService.activation(userId)
-            return res.redirect('https://t.me/fazliddinkhayrullaev')
+            return res.redirect(process.env.CLIENT_URL)
         } catch (error) {
             console.log(error);
             
         }
         
     }
-
-
     async login(req,res,next){
         try {
             const{email,password}=req.body
@@ -67,6 +65,19 @@ class AuthController{
         } catch (error) {
             console.log(error);
             
+        }
+
+
+
+    }
+    async refresh(req,res,next){
+        try {
+        const {refreshToken}=req.cookies
+        const data=await authService.refresh(refreshToken)
+        res.cookie('refreshToken',data.refreshToken,{httpOnly:true,maxAge:30*24*60*60*1000,secure:true})
+        return res.json(data)  
+        } catch (error) {
+            console.log(error);
         }
 
 

@@ -3,6 +3,7 @@ const userModel = require("../models/user.model")
 const bcrypt=require('bcrypt')
 const tokenService = require("./token.service")
 const mailService = require("./mail.service")
+const tokenModel = require("../models/token.model")
 
 class AuthService{
 
@@ -75,6 +76,35 @@ class AuthService{
 
     async logout(refreshToken){
      return await tokenService.removeToken(refreshToken)
+    }
+
+    async refresh(refreshToken){
+        if(!refreshToken){
+            throw new Error('Bad authorization')
+        }
+
+        const userPayload=tokenService.validateRefreshToken(refreshToken)
+        const tokenDb=await tokenService.findToken(refreshToken)
+
+        if(!userPayload|| !tokenDb){
+            throw new Error('Bad authorization')
+        }
+
+
+
+        const user=await userModel.findById(userPayload.id)
+
+        const userDto=new UserDto(user)
+
+        const tokens=tokenService.generateToken({...userDto})
+        await tokenService.saveTokens(userDto.id,tokens.refreshToken)
+
+        return {user:userDto,...tokens}
+
+
+
+
+
     }
 
  
