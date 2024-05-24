@@ -2,3 +2,5 @@ node_modules
 .gitignore
 .env
 static
+
+client/node_modules
