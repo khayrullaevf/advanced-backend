@@ -4,6 +4,7 @@ const bcrypt=require('bcrypt')
 const tokenService = require("./token.service")
 const mailService = require("./mail.service")
 const tokenModel = require("../models/token.model")
+const BaseError = require("../errors/base.error")
 
 class AuthService{
 
@@ -13,7 +14,7 @@ class AuthService{
 
 
         if (existUser) {
-            throw new Error('User has already registered with this email '+email)
+            throw BaseError.BadRequest('User has already registered with this email '+email)
         }
         const hashPassword=await bcrypt.hash(password,10)
 
@@ -41,7 +42,7 @@ class AuthService{
         const user=await userModel.findById(userId)
 
         if (!user) {
-            throw new Error('user does not exist')
+            throw  BaseError.BadRequest('user does not exist')
         }
 
         user.isActivated=true
@@ -54,12 +55,12 @@ class AuthService{
     async login(email,password){
         const user=await userModel.findOne({email})
         if(!user){
-            throw new Error('user does not exist')
+            throw BaseError.BadRequest('user does not exist')
         }
 
         const isPassword=await bcrypt.compare(password,user.password)
         if (!isPassword) {
-            throw new Error('Password is incorrect')
+            throw BaseError.BadRequest('Password is incorrect')
            
         }
 
@@ -80,14 +81,14 @@ class AuthService{
 
     async refresh(refreshToken){
         if(!refreshToken){
-            throw new Error('Bad authorization')
+            throw BaseError.UnauthorizedError('Bad authorization')
         }
 
         const userPayload=tokenService.validateRefreshToken(refreshToken)
         const tokenDb=await tokenService.findToken(refreshToken)
 
         if(!userPayload|| !tokenDb){
-            throw new Error('Bad authorization')
+            throw BaseError.UnauthorizedError('Bad authorization')
         }
 
 

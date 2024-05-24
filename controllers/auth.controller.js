@@ -11,7 +11,7 @@ class AuthController{
             return res.json(data)
             
         } catch (error) {
-            console.log(error);
+           next(error)
             
         }
     
@@ -23,7 +23,7 @@ class AuthController{
             await authService.activation(userId)
             return res.redirect(process.env.CLIENT_URL)
         } catch (error) {
-            console.log(error);
+            next(error)
             
         }
         
@@ -38,7 +38,8 @@ class AuthController{
 
             
         } catch (error) {
-            console.log(error);
+            next(error)
+
             
         }
 
@@ -63,7 +64,8 @@ class AuthController{
 
             
         } catch (error) {
-            console.log(error);
+            next(error)
+
             
         }
 
@@ -77,7 +79,8 @@ class AuthController{
         res.cookie('refreshToken',data.refreshToken,{httpOnly:true,maxAge:30*24*60*60*1000,secure:true})
         return res.json(data)  
         } catch (error) {
-            console.log(error);
+            next(error)
+
         }
 
 
