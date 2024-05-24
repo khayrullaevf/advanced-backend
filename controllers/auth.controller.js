@@ -1,10 +1,18 @@
+const BaseError = require('../errors/base.error')
 const authService = require('../service/auth.service')
+
+const {validationResult}=require('express-validator')
 
 class AuthController{
 
 
     async register(req,res,next){
         try {
+            const errors=validationResult(req)
+            if (!errors.isEmpty()) {
+                return next(BaseError.BadRequest("Error with validation",errors.array()))
+                
+            }
             const{email,password}=req.body
             const data=await authService.register(email,password)
             res.cookie('refreshToken',data.refreshToken,{httpOnly:true,maxAge:30*24*60*60*1000,secure:true})
