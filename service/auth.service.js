@@ -108,6 +108,10 @@ class AuthService{
 
     }
 
+    async getUsers(){
+        return await userModel.find()
+    }
+
  
 
 

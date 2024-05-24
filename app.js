@@ -7,10 +7,13 @@ const  mongoose  = require('mongoose')
 const fileUpload=require('express-fileupload')
 const cookieParser=require('cookie-parser')
 const errorMiddleware = require('./middlewares/error.middleware')
+const cors=require('cors')
 
 
 const app=express()
 
+
+app.use(cors({}))
 app.use(express.json())
 app.use(fileUpload())
 app.use(express.static('static'))

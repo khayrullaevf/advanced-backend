@@ -3,6 +3,7 @@ const userModel=require('./../models/user.model')
 const authController = require('../controllers/auth.controller')
 
 const {body}=require('express-validator')
+const authMiddleware = require('../middlewares/auth.middleware')
 
 
 const router=express.Router()
@@ -21,6 +22,14 @@ body("password").isLength({min:3,max:20}) ,
 authController.login)
 router.post('/logout',authController.logout)
 router.get('/refresh',authController.refresh)
+
+
+
+
+router.get('/get-users', authMiddleware ,authController.getUsers)
+
+
+
 
 
 
