@@ -49,7 +49,7 @@ function CreatePost(){
 
     const config = {
       headers: {
-          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZhemxpZGRpbmtoYXlydWxsYWV2NEBnbWFpbC5jb20iLCJpZCI6IjY2NTA3OTU2NDVmMmMyZGJkMzkwNmUyOSIsImlzQWN0aXZhdGVkIjp0cnVlLCJpYXQiOjE3MTY3OTQyNzgsImV4cCI6MTcxNjc5NTE3OH0.KNtoFC1FLFygfcHa_Lce1T7ar8Os1kGiPiE-C31oIKo`,
+          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZhemxpZGRpbmtoYXlydWxsYWV2NEBnbWFpbC5jb20iLCJpZCI6IjY2NTA3OTU2NDVmMmMyZGJkMzkwNmUyOSIsImlzQWN0aXZhdGVkIjp0cnVlLCJpYXQiOjE3MTY4MDAyODEsImV4cCI6MTcxNzIzMjI4MX0.vmObgCszuK0JhSk7I07qCAH1xuar3GVrxyTgOexVVkM`,
       }
   };
   
@@ -59,7 +59,11 @@ function CreatePost(){
     })
     .catch(error => {
       console.error('Error:', error);
-    }).finally(()=>setLoading(false));
+    }).finally(()=>{
+      form.reset()
+      setPicture(null)
+      setLoading(false)
+    });
     console.log(formData)
     toast.promise(promise,{
       loading:'loading...',
