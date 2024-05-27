@@ -23,6 +23,7 @@ import axios from 'axios'
 import { toast } from "sonner"
 
 function CreatePost(){
+      const [loading, setLoading] = useState<boolean>(false)
      const [picture, setPicture] = useState<File|null>(null)
     const {isOpen,onClose}=useCreatePost()
 
@@ -39,6 +40,7 @@ function CreatePost(){
 
   function onSubmit(values: z.infer<typeof postSchema>) {
     if (!picture) return null
+    setLoading(true)
 
     const formData=new FormData()
     formData.append('title',values.title)
@@ -57,7 +59,7 @@ function CreatePost(){
     })
     .catch(error => {
       console.error('Error:', error);
-    });
+    }).finally(()=>setLoading(false));
     console.log(formData)
     toast.promise(promise,{
       loading:'loading...',
@@ -71,6 +73,8 @@ function CreatePost(){
     const file=event.target.files&&event.target.files[0]
     setPicture(file as File)
   }
+
+
 
 
 
@@ -97,7 +101,7 @@ function CreatePost(){
             <FormItem>
               <FormLabel>Title</FormLabel>
               <FormControl>
-                <Input placeholder="Write your post title..." {...field}  className="bg-secondary"/>
+                <Input placeholder="Write your post title..." {...field}  className="bg-secondary" disabled={loading}/>
               </FormControl>
               <FormDescription>
                 This is your public display name.
@@ -113,7 +117,7 @@ function CreatePost(){
             <FormItem>
               <FormLabel>Body</FormLabel>
               <FormControl>
-                <Textarea placeholder="Write post body..." {...field}  className="bg-secondary"/>
+                <Textarea placeholder="Write post body..." {...field}  className="bg-secondary" disabled={loading}/>
               </FormControl>
               <FormDescription>
                 This is your public display name.
@@ -124,13 +128,13 @@ function CreatePost(){
         />
         <div>
           <Label htmlFor="picture">Picture</Label>
-          <Input id='picture' type="file" className="bg-secondary"  onChange={onFileChange}/>
+          <Input id='picture' type="file" className="bg-secondary"  onChange={onFileChange} disabled={loading}/>
 
 
 
 
         </div>
-        <Button type="submit" className="rounded-full">Submit</Button>
+        <Button type="submit" className="rounded-full"  disabled={loading}>Submit</Button>
       </form>
     </Form>
 
