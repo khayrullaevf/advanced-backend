@@ -1,13 +1,20 @@
 
-import './App.css'
+import { Route, Routes } from 'react-router-dom'
+import Home from './pages/home'
+import Auth from './pages/auth'
+import Navbar from './components/shared/navbar'
 
 function App() {
 
 
   return (
-    <div>
-     app
-    </div>
+    <>
+      <Navbar/>
+      <Routes>
+      <Route path='/' element={<Home/>}/>
+      <Route path='/auth' element={<Auth/>}/>
+    </Routes>
+    </>
   )
 }
 
