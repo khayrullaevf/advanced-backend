@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { authSchema } from "@/lib/validation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -7,15 +8,18 @@ import { Input } from "../ui/input"
 import { Button } from "../ui/button"
 import { useAuth } from "@/hooks/use-auth"
 
+
 import { useMutation } from "@tanstack/react-query"
 import $axios from "@/http"
 import { toast } from "sonner"
 import FillLoading from "../shared/fill-loading"
 import { authStore } from "@/store/auth.store"
+import { useNavigate } from "react-router-dom"
 
 function Login() {
 
     const{setAuth}=useAuth()
+    const navigate=useNavigate()
 
     const {setIsAuth,setUser}=authStore()
 
@@ -37,10 +41,12 @@ function Login() {
            setUser(data.user)
            setIsAuth(true)
            localStorage.setItem('accessToken',data.accessToken)
+           navigate('/')
 
         },
         onError:(error)=>{
-         toast(error.message)
+            //@ts-expect-error
+         toast(error?.response?.data?.message)
         }
     })
      
