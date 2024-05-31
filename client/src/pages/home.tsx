@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Post } from "app.types";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons"
 import { postStore } from "@/store/post.store";
+import ConfirmModal from "@/components/modals/confirm.modal";
 
 function Home() {
 
@@ -27,7 +28,9 @@ function Home() {
 
 
   return (
-    <div className="container max-w-4xl mx-auto mt-28">
+    <>
+
+<div className="container max-w-4xl mx-auto mt-28">
       {error&&(
 
          <Alert variant="destructive">
@@ -40,11 +43,14 @@ function Home() {
       )}
       <div className="grid grid-cols-3 gap-4">
         {isLoading&&Array.from({length:6}).map((_,index)=><PostLoading key={index}/>)}
-        {posts?.map((post: Post) => (
-          <PostCard key={post._id} post={post}/>
+        {posts.map((post: Post,index) => (
+          <PostCard key={index} post={post}/>
         ))}
       </div>
     </div>
+    <ConfirmModal/>
+    </>
+  
   );
 }
 
